@@ -1,0 +1,30 @@
+title: High Number of Failed Login Attempts
+id: 4d2f9a6e-8c3b-4f1d-9a7e-2b6c1e3f5a9d  
+status: experimental
+description: Detects multiple failed login attempts within a short time window, which may indicate brute-force or account misuse
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  product: windows
+  service: security
+  category: authentication
+detection:
+  selection:
+    EventID: 4625
+  condition: selection
+fields:
+  - TargetUserName
+  - IpAddress
+  - WorkstationName
+  - LogonType
+  - FailureReason
+  - SubjectUserName
+  - SubjectDomainName
+tags:
+  - attack.credential_access
+  - attack.brute_force
+  - attack.t1110
+falsepositives:
+  - mistyped passwords
+  - expired credentials
+level: medium
