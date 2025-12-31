@@ -1,0 +1,39 @@
+title: Execution of File with Double Extension
+id: 1a9d3c7e-5f2b-4c8a-9e1d-3b6f7a2c4d8e  
+status: experimental
+description: Detects execution of files with double extensions (e.g., .pdf.exe), often used in phishing and malware delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|contains:
+      - '.doc.exe'
+      - '.pdf.exe'
+      - '.xls.exe'
+      - '.ppt.exe'
+      - '.txt.exe'
+      - '.jpg.exe'
+      - '.png.exe'
+      - '.gif.exe'
+      - '.doc.scr'
+      - '.pdf.scr'
+      - '.xls.scr'
+      - '.txt.scr'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1036.007
+falsepositives:
+  - legitimate versioned filenames (rare)
+level: high
