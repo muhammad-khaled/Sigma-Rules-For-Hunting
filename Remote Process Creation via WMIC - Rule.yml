@@ -1,0 +1,31 @@
+title: Remote Process Creation via WMIC
+id: 8c2f9a1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects remote process creation using WMIC, which may indicate lateral movement or remote execution by adversaries
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\wmic.exe'
+    CommandLine|contains:
+      - 'process call create'
+      - '/node:'
+      - '/user:'
+      - '/password:'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.lateral_movement
+  - attack.t1021.001
+falsepositives:
+  - legitimate remote administration or automation tools
+level: high
