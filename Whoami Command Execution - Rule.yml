@@ -1,0 +1,25 @@
+title: Whoami Command Execution
+id: 9c2f7a1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of the whoami command, which may indicate user enumeration or environment discovery by adversaries
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains: 'whoami'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.discovery
+  - attack.t1033
+falsepositives:
+  - legitimate administrative or troubleshooting activity
+level: low
