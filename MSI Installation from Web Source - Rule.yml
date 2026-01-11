@@ -1,0 +1,29 @@
+title: MSI Installation from Web Source
+id: 9a7c2e3d-1f4b-4d6a-9c8f-2b5f1e7a6d3c
+status: experimental
+description: Detects execution of msiexec.exe with a URL as the installation source, which may indicate remote payload delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\msiexec.exe'
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.initial_access
+  - attack.t1218.007
+falsepositives:
+  - legitimate remote MSI deployments
+level: high
