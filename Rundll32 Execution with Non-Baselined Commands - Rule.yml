@@ -1,0 +1,35 @@
+title: Rundll32 Execution with Non-Baselined Commands
+id: 6a2f9c1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of rundll32.exe with suspicious or non-baselined command-line arguments, which may indicate evasion or payload delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\rundll32.exe'
+    CommandLine|contains:
+      - 'javascript:'
+      - 'shell32.dll,ShellExec_RunDLL'
+      - 'url.dll,FileProtocolHandler'
+      - 'LaunchApplication'
+      - 'ZipFolder.dll'
+      - 'Invoke-WebRequest'
+      - 'http://'
+      - 'https://'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1218.011
+falsepositives:
+  - legitimate application launchers or installers
+level: high
