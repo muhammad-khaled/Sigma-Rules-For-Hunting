@@ -2,7 +2,7 @@
 
 ## Author
 **Mohamed Khaled Ibrahim**  
-Senior Cyber Sceurity Analyst | Threat Hunter & Detection Engineering  
+Senior Cyber Security Analyst | Threat Hunter & Detection Engineering  
 Date: 2025-08-28
 
 ## Overview
@@ -40,4 +40,5 @@ All rules authored and validated by **Mohamed Khaled Ibrahim**, with modular des
 ## License
 
 This pack is intended for internal SOC use and community collaboration. Attribution required if redistributed.
+
 
