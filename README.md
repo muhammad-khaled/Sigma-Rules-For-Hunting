@@ -2,7 +2,7 @@
 
 ## Author
 **Mohamed Khaled Ibrahim**  
-SOC Analyst | Threat Intelligence & Detection Engineering  
+Senior SOC Analyst | Threat Hunter & Detection Engineering  
 Date: 2025-08-28
 
 ## Overview
@@ -38,4 +38,5 @@ This pack maps to the following techniques:
 All rules authored and validated by **Mohamed Khaled Ibrahim**, with modular design and operational metadata for SOC enablement and public sharing.
 
 ## License
+
 This pack is intended for internal SOC use and community collaboration. Attribution required if redistributed.
