@@ -1,0 +1,27 @@
+title: Inbound Network Connection
+id: 8d1f3a7c-2e4b-4c9a-8f6d-3a7e2c5b9d1f
+status: experimental
+description: Detects inbound network connections, which may indicate exposure to public networks
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    Direction: inbound
+  condition: selection
+fields:
+  - SourceIp
+  - DestinationIp
+  - DestinationPort
+  - Image
+  - User
+  - Hostname
+tags:
+  - attack.command_and_control
+  - attack.initial_access
+  - attack.t1046
+falsepositives:
+  - legitimate remote access (VPN, RDP gateway)
+level: medium

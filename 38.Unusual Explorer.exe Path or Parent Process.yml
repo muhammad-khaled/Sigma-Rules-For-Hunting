@@ -1,0 +1,42 @@
+title: Unusual Explorer.exe Path or Parent Process
+id: 3c7f9a1d-4e3b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of explorer.exe from non-standard paths or with suspicious parent processes, which may indicate masquerading or process injection
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection_path:
+    Image|endswith: '\explorer.exe'
+    Image|contains:
+      - '\AppData\'
+      - '\Temp\'
+      - '\Users\Public\'
+      - '\Downloads\'
+      - '\\'
+  selection_parent:
+    Image|endswith: '\explorer.exe'
+    ParentImage|endswith:
+      - '\powershell.exe'
+      - '\cmd.exe'
+      - '\wscript.exe'
+      - '\mshta.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+  condition: selection_path or selection_parent
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1036
+falsepositives:
+  - legitimate automation or shell customization tools
+level: high

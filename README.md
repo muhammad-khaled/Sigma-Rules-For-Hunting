@@ -1,56 +1,41 @@
-# Sigma-Rules-For-Hunting
-A curated collection of Sigma rules tailored for threat hunting activities. This repository provides ready-to-use detection logic, with mappings to KQL for Microsoft Defender and other SIEM/XDR platforms. Ideal for security teams looking to accelerate hunting and detection engineering.
+# Sigma Detection Pack – Behavioral & Threat-Centric Rules
 
-If you’re a SOC Analyst, Threat Detection, or Threat Hunter, Sigma rules are one of the most practical ways to make your hunting proactive, scalable, and consistent across tools.  
+## Author
+**Mohamed Khaled Ibrahim**  
+SOC Analyst | Threat Intelligence & Detection Engineering  
+Date: 2025-08-28
 
- 
-1 — From data to hypothesis to action  
-• Collect: CTI, dark web monitoring, reports, proactive thinking  
-• Form: Build a clear hypothesis (what activity, where, and why)  
-• Act: Turn that hypothesis into documented, reusable detections  
- 
+## Overview
+This Sigma rule pack focuses on high-fidelity detections across execution, persistence, network anomalies, and abuse of trusted binaries. It is designed to support SOC operations, threat hunting, and proactive defense against adversary behaviors mapped to MITRE ATT&CK.
 
-2 — What is Sigma?  
-• A universal detection rule format written in YAML  
-• Write once, convert to many detection languages and platforms
-• Standardized structure for clear, maintainable hunting content  
+## Rule Categories
+- **Execution & Scripting Abuse**: Detects obfuscated PowerShell, suspicious rundll32/wscript usage, and non-baselined child processes.
+- **Persistence & Evasion**: Flags startup folder abuse, scheduled tasks, firewall changes, and signed binary proxy execution.
+- **Network & C2 Detection**: Identifies outbound connections to public IPs, remote WMIC execution, and IP scanning behavior.
+- **Authentication & Access**: Detects logon attempts from public IPs and shared folder access.
+- **System Masquerading**: Captures explorer.exe and conhost.exe launched from unusual paths or parents.
+- **Defender & Exploit Guard Events**: Monitors blocked outbound traffic via Defender Exploit Guard.
 
+## MITRE ATT&CK Coverage
+This pack maps to the following techniques:
+- `T1059` – Command and Scripting Interpreter  
+- `T1071` – Application Layer Protocol  
+- `T1053.005` – Scheduled Task  
+- `T1547.001` – Startup Folder  
+- `T1021.001/002` – Remote Services  
+- `T1562.004` – Disable or Modify System Firewall  
+- `T1218` – Signed Binary Proxy Execution  
+- `T1036` – Masquerading  
+- `T1046` – Network Service Scanning  
+- `T1486` – Data Encrypted for Impact
 
-3 — Basic Structure of a Sigma Rule  
-title: Suspicious PowerShell  
-id: uuid  
-status: stable  
-description: Detects encoded PowerShell  
-logsource:  
-  product: Windows  
-  category: process_creation  
-Detection:  
-  Selection:  
-    CommandLine|contains: 'malicious.exe'  
-condition: selection  
-falsepositives:  
-  - Legitimate admin tool  
-level: high  
-tags:  
-  - attack.execution  
-  - attack.t1059.001  
+## Deployment Notes
+- Rules are tagged `experimental` and should be tested in detection-only mode before enforcement.
+- Use Sigma converters (`sigmac`) to deploy across Splunk, Sentinel, Elastic, etc.
+- Tune false positives based on environment-specific baselines and automation scripts.
 
+## Attribution
+All rules authored and validated by **Mohamed Khaled Ibrahim**, with modular design and operational metadata for SOC enablement and public sharing.
 
-4 — Key Parts Explained Simply  
-• title → Rule name (“Suspicious PowerShell”)  
-• id → Unique ID (uuid format)  
-• status → Rule maturity (test, stable, etc.)  
-• description → What it detects (“Detects encoded PowerShell”)  
-• logsource → Where to look (Windows, Linux, etc.)  
-• detection → What to match (EventID, CommandLine, etc.)  
-• condition → How to match (selection/selection and not filter)  
-• falsepositives → Known noise (Legit WMI use)  
-• level → Severity (medium, high, etc.)  
-• tags → MITRE ATT&CK mapping (attack.persistence)  
-
-
-5 — Benefits of adopting Sigma  
-• Consistency: Shared language across teams and tools  
-• Scalability: One rule, many backends  
-• Documentation: Clear evidence of intent and outcomes  
-• Velocity: Faster hypothesis testing and repeatable hunts  
+## License
+This pack is intended for internal SOC use and community collaboration. Attribution required if redistributed.

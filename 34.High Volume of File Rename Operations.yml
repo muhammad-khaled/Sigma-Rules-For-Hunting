@@ -1,0 +1,26 @@
+title: High Volume of File Rename Operations
+id: 6f2c9a1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects processes performing a high number of file rename operations, which may indicate ransomware, wipers, or mass staging behavior
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: file_rename
+  product: windows
+detection:
+  selection:
+    EventType: 'FileRenamed'
+  condition: selection
+fields:
+  - Image
+  - TargetFilename
+  - NewFilename
+  - User
+  - Hostname
+tags:
+  - attack.impact
+  - attack.collection
+  - attack.t1486
+falsepositives:
+  - legitimate file management or backup tools
+level: high

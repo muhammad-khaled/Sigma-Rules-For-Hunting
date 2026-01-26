@@ -1,0 +1,31 @@
+title: Suspicious Registry Interaction
+id: 4b7e2c9a-1f3d-4a6e-9d8c-2e5f1a7b6d3e
+status: experimental
+description: Detects processes interacting with sensitive registry keys, often used for persistence or system modification
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    TargetObject|contains:
+      - '\Software\Microsoft\Windows\CurrentVersion\Run'
+      - '\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+      - '\System\CurrentControlSet\Services'
+      - '\Software\Microsoft\Windows NT\CurrentVersion\Winlogon'
+      - '\Software\Policies\Microsoft\Windows'
+  condition: selection
+fields:
+  - Image
+  - TargetObject
+  - Details
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.privilege_escalation
+  - attack.t1547
+falsepositives:
+  - legitimate software installations or updates
+level: high

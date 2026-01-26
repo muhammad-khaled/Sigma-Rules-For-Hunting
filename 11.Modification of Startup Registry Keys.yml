@@ -1,0 +1,30 @@
+title: Modification of Startup Registry Keys
+id: 2f9c7a1e-4d3b-4e6f-9a8c-1b7e2f5d6c3a
+status: experimental
+description: Detects modification of registry keys used for persistence via startup execution
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    TargetObject|contains:
+      - '\Software\Microsoft\Windows\CurrentVersion\Run'
+      - '\Software\Microsoft\Windows\CurrentVersion\RunOnce'
+      - '\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run'
+      - '\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit'
+      - '\Microsoft\Windows NT\CurrentVersion\Winlogon\Shell'
+  condition: selection
+fields:
+  - Image
+  - TargetObject
+  - Details
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.t1547.001
+falsepositives:
+  - legitimate software installations or updates
+level: high

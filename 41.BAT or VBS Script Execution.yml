@@ -1,0 +1,33 @@
+title: BAT or VBS Script Execution
+id: 1e9f7a2d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of batch (.bat) or VBScript (.vbs) files, which may indicate initial access, persistence, or script-based payload delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - '.bat'
+      - '.vbs'
+    Image|endswith:
+      - '\cmd.exe'
+      - '\wscript.exe'
+      - '\cscript.exe'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.initial_access
+  - attack.t1059.003
+  - attack.t1059.005
+falsepositives:
+  - legitimate automation or deployment scripts
+level: high

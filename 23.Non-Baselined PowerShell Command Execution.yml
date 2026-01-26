@@ -1,0 +1,37 @@
+title: Non-Baselined PowerShell Command Execution
+id: 2d9f7a1c-3e4b-4d6a-9f8c-1b5f2a7c6d3e
+status: experimental
+description: Detects execution of PowerShell commands that are not part of the established baseline, which may indicate suspicious or unauthorized activity
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains:
+      - 'Invoke-WebRequest'
+      - 'DownloadFile'
+      - 'Invoke-Expression'
+      - 'Add-MpPreference'
+      - 'Set-MpPreference'
+      - 'Remove-MpPreference'
+      - 'New-Object Net.WebClient'
+      - 'Start-BitsTransfer'
+      - 'FromBase64String'
+      - 'IEX'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059.001
+falsepositives:
+  - legitimate administrative scripts or automation tools
+level: high

@@ -1,0 +1,35 @@
+title: Conhost Spawned By Non-Baselined Parent Process
+id: 4d2f9a1c-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects conhost.exe being spawned by suspicious or non-baselined parent processes, which may indicate obfuscated execution or abuse of terminal infrastructure
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\conhost.exe'
+    ParentImage|endswith:
+      - '\powershell.exe'
+      - '\wscript.exe'
+      - '\mshta.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+      - '\wmic.exe'
+      - '\control.exe'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059
+falsepositives:
+  - legitimate scripting or remote management tools
+level: high

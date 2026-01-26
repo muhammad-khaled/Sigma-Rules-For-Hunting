@@ -1,0 +1,32 @@
+title: Unusual Service Binary Location
+id: 3d7a9c2e-1f4b-4e6f-9a8c-2b5f1e7c6d3a
+status: experimental
+description: Detects service installations or modifications where the binary path is located in non-standard directories
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    TargetObject|contains: '\Services\'
+    Details|contains:
+      - '\AppData\'
+      - '\Temp\'
+      - '\Users\Public\'
+      - '\\'
+  condition: selection
+fields:
+  - Image
+  - TargetObject
+  - Details
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.defense_evasion
+  - attack.t1543.003
+falsepositives:
+  - portable or developer tools
+  - legitimate service testing
+level: high

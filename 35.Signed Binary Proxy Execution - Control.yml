@@ -1,0 +1,32 @@
+title: Signed Binary Proxy Execution - Control.exe
+id: 7e3f9a1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of control.exe with suspicious arguments, which may indicate signed binary proxy execution for evasion or payload delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\control.exe'
+    CommandLine|contains:
+      - 'control.exe /name'
+      - 'control.exe /app'
+      - 'control.exe http://'
+      - 'control.exe https://'
+      - 'control.exe javascript:'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.defense_evasion
+  - attack.execution
+  - attack.t1218.002
+falsepositives:
+  - legitimate control panel usage or automation
+level: high

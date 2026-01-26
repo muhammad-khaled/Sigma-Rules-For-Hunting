@@ -1,0 +1,33 @@
+title: Schedule Task or Service Created from Suspicious Location
+id: 4f2a9c1d-3e7b-4d6a-9f8c-1b5f2a7c6d3e
+status: experimental
+description: Detects creation of scheduled tasks or services where the binary path is located in non-standard or suspicious directories
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: registry_event
+  product: windows
+detection:
+  selection:
+    TargetObject|contains: '\Services\'
+    Details|contains:
+      - '\AppData\'
+      - '\Temp\'
+      - '\Users\Public\'
+      - '\Downloads\'
+      - '\\'
+  condition: selection
+fields:
+  - Image
+  - TargetObject
+  - Details
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.defense_evasion
+  - attack.t1053.005
+  - attack.t1543.003
+falsepositives:
+  - legitimate portable or testing services
+level: high

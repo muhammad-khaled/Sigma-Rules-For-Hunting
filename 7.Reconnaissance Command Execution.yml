@@ -1,0 +1,40 @@
+title: Reconnaissance Command Execution
+id: 5c1e8a3d-9f2b-4d7a-8c6e-2a3f1b7e6d9c
+status: experimental
+description: Detects execution of common reconnaissance commands used to enumerate users, shares, and network information
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'net user'
+      - 'net group'
+      - 'net localgroup'
+      - 'net view'
+      - 'net share'
+      - 'whoami'
+      - 'systeminfo'
+      - 'ipconfig'
+      - 'query session'
+      - 'nltest'
+      - 'dsquery'
+      - 'netstat'
+      - 'tasklist'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.discovery
+  - attack.t1087
+  - attack.t1016
+  - attack.t1033
+falsepositives:
+  - legitimate administrative scripts
+level: medium

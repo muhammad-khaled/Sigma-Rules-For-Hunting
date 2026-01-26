@@ -1,0 +1,27 @@
+title: Execution from Startup Folder
+id: 9d2f7a1c-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of files from the Startup folder, which may indicate persistence via user logon
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - '\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\'
+      - '\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.t1547.001
+falsepositives:
+  - legitimate startup applications
+level: high

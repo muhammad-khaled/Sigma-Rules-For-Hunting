@@ -1,0 +1,53 @@
+title: Powershell/CMD/WMIC/Rundll32/Regsvr32 Communicating to Public IP
+id: 7c2f9a1d-4e3b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects suspicious processes initiating outbound connections to public IP addresses, which may indicate C2 or data exfiltration
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    Image|endswith:
+      - '\powershell.exe'
+      - '\cmd.exe'
+      - '\wmic.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+  filter:
+    DestinationIp|startswith:
+      - '10.'
+      - '192.168.'
+      - '172.16.'
+      - '172.17.'
+      - '172.18.'
+      - '172.19.'
+      - '172.20.'
+      - '172.21.'
+      - '172.22.'
+      - '172.23.'
+      - '172.24.'
+      - '172.25.'
+      - '172.26.'
+      - '172.27.'
+      - '172.28.'
+      - '172.29.'
+      - '172.30.'
+      - '172.31.'
+  condition: selection and not filter
+fields:
+  - Image
+  - CommandLine
+  - DestinationIp
+  - DestinationPort
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.command_and_control
+  - attack.exfiltration
+  - attack.t1071
+falsepositives:
+  - legitimate remote administration tools
+level: high

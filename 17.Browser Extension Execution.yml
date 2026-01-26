@@ -1,0 +1,30 @@
+title: Browser Extension Execution
+id: 5f2c7a1d-3e4b-4d6a-9f8c-2b7e1a6c9d3f
+status: experimental
+description: Detects execution or loading of browser extensions, which may indicate user tracking, data exfiltration, or unauthorized customization
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'chrome-extension://'
+      - 'moz-extension://'
+      - 'edge-extension://'
+      - 'Opera Stable'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.collection
+  - attack.defense_evasion
+  - attack.t1113
+falsepositives:
+  - legitimate browser extension usage
+level: medium

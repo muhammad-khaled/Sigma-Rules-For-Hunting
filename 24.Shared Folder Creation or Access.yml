@@ -1,0 +1,32 @@
+title: Shared Folder Creation or Access
+id: 1c7f9a2d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects creation or access of shared folders, which may indicate lateral movement, data staging, or unauthorized exposure
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: file_access
+  product: windows
+detection:
+  selection:
+    ShareName|contains:
+      - '\\'
+      - 'C$'
+      - 'ADMIN$'
+      - 'IPC$'
+      - 'Users'
+      - 'Public'
+  condition: selection
+fields:
+  - ShareName
+  - Image
+  - CommandLine
+  - User
+  - Hostname
+tags:
+  - attack.lateral_movement
+  - attack.collection
+  - attack.t1021.002
+falsepositives:
+  - legitimate file sharing or backup operations
+level: medium

@@ -1,0 +1,35 @@
+title: Non-Baselined Wscript Execution
+id: 7d3f9a2c-1e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of wscript.exe with suspicious or non-baselined command-line arguments, which may indicate evasion or script-based payload delivery
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\wscript.exe'
+    CommandLine|contains:
+      - 'http://'
+      - 'https://'
+      - 'FromBase64String'
+      - 'DownloadString'
+      - 'Invoke-Expression'
+      - 'IEX'
+      - '.vbs'
+      - '.js'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059.005
+falsepositives:
+  - legitimate automation or enterprise scripts
+level: high

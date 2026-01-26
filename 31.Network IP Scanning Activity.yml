@@ -1,0 +1,33 @@
+title: Network IP Scanning Activity
+id: 1a9f7c2d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects execution of commands commonly used for network IP scanning, which may indicate reconnaissance or lateral movement preparation
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'ping'
+      - 'for /l'
+      - 'nmap'
+      - 'Test-Connection'
+      - 'Invoke-PingSweep'
+      - 'fping'
+      - 'netdiscover'
+      - 'arp -a'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.discovery
+  - attack.t1046
+falsepositives:
+  - legitimate network diagnostics or inventory scans
+level: medium

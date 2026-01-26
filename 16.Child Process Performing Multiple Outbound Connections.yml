@@ -1,0 +1,36 @@
+title: Child Process Performing Multiple Outbound Connections
+id: 2c7f9a1e-4d3b-4e6f-9a8c-1b5f2a7c6d3e
+status: experimental
+description: Detects child processes spawned by a parent that initiate outbound connections, which may indicate staged payloads or C2 activity
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    Direction: outbound
+    Image|endswith:
+      - '\powershell.exe'
+      - '\cmd.exe'
+      - '\wscript.exe'
+      - '\mshta.exe'
+      - '\rundll32.exe'
+      - '\regsvr32.exe'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentProcessGuid
+  - DestinationIp
+  - DestinationPort
+  - User
+  - Hostname
+tags:
+  - attack.command_and_control
+  - attack.execution
+  - attack.t1041
+falsepositives:
+  - legitimate automation or update tools
+level: high

@@ -1,0 +1,37 @@
+title: Communication to Suspicious Hosting Services
+id: 7a3e9c1d-2f4b-4d6a-9e8c-1b5f2a7c6d3e
+status: experimental
+description: Detects outbound network connections to suspicious hosting services or known malicious infrastructure
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: network_connection
+  product: windows
+detection:
+  selection:
+    DestinationIp|contains:
+      - '185.62.189.'       # example: known C2 subnet
+      - '45.83.64.'         # example: bulletproof hosting
+      - '91.215.85.'        # example: phishing infrastructure
+    DestinationHostname|contains:
+      - '.duckdns.org'
+      - '.no-ip.com'
+      - '.dynu.com'
+      - '.servehttp.com'
+      - '.hopto.org'
+  condition: selection
+fields:
+  - DestinationIp
+  - DestinationHostname
+  - DestinationPort
+  - Image
+  - CommandLine
+  - User
+  - Hostname
+tags:
+  - attack.command_and_control
+  - attack.exfiltration
+  - attack.t1071
+falsepositives:
+  - legitimate use of dynamic DNS (rare)
+level: high

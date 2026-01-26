@@ -1,0 +1,31 @@
+title: Failed Login Attempts from Agentless Device
+id: 6e3c9a2d-1f4b-4d6a-9f8c-2b7f1a6c5d3e
+status: experimental
+description: Detects failed login attempts originating from agentless devices, which may indicate unauthorized access or misconfigured integrations
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  product: windows
+  service: security
+  category: authentication
+detection:
+  selection:
+    EventID: 4625
+    WorkstationName: '-'
+  condition: selection
+fields:
+  - TargetUserName
+  - IpAddress
+  - WorkstationName
+  - LogonType
+  - FailureReason
+  - SubjectUserName
+  - SubjectDomainName
+tags:
+  - attack.credential_access
+  - attack.brute_force
+  - attack.t1110
+falsepositives:
+  - API-based authentication failures
+  - misconfigured monitoring tools
+level: medium

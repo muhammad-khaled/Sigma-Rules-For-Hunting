@@ -1,0 +1,25 @@
+title: High Volume of File Modifications by Single Process
+id: 1e9c7a2d-3f4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects processes that modify a large number of files, which may indicate ransomware, wipers, or mass staging
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: file_change
+  product: windows
+detection:
+  selection:
+    EventType: 'FileModified'
+  condition: selection
+fields:
+  - Image
+  - TargetFilename
+  - User
+  - Hostname
+tags:
+  - attack.impact
+  - attack.collection
+  - attack.t1485
+falsepositives:
+  - legitimate backup or sync tools
+level: high

@@ -1,0 +1,31 @@
+title: Scheduled Task Creation
+id: 5e2f9a1c-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects creation of scheduled tasks, which may indicate persistence or automated execution by adversaries
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'schtasks /create'
+      - 'Schedule.Service'
+      - 'New-ScheduledTask'
+      - 'Set-ScheduledTask'
+      - 'Register-ScheduledTask'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.persistence
+  - attack.execution
+  - attack.t1053.005
+falsepositives:
+  - legitimate automation or administrative scripts
+level: high

@@ -1,0 +1,32 @@
+title: Local Firewall Configuration Change
+id: 8f2c7a1d-3e4b-4d6a-9f8c-2b5f1a7c6d3e
+status: experimental
+description: Detects changes to local firewall configuration, which may indicate evasion, misconfiguration, or unauthorized access setup
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'netsh advfirewall'
+      - 'Set-NetFirewallProfile'
+      - 'New-NetFirewallRule'
+      - 'Remove-NetFirewallRule'
+      - 'Enable-NetFirewallRule'
+      - 'Disable-NetFirewallRule'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - User
+  - Hostname
+tags:
+  - attack.defense_evasion
+  - attack.persistence
+  - attack.t1562.004
+falsepositives:
+  - legitimate administrative scripts or GPO updates
+level: high

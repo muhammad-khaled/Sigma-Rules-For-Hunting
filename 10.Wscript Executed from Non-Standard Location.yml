@@ -1,0 +1,31 @@
+title: Wscript Executed from Non-Standard Location
+id: 6c2f9a1d-3e7b-4d8a-9f6c-1a2e3b7d5c9f
+status: experimental
+description: Detects execution of wscript.exe from directories other than System32 or SysWOW64, which may indicate staging or evasion
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|contains: '\wscript.exe'
+  filter:
+    Image|startswith:
+      - 'C:\Windows\System32\wscript.exe'
+      - 'C:\Windows\SysWOW64\wscript.exe'
+  condition: selection and not filter
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059.005
+falsepositives:
+  - portable scripting environments or developer tools
+level: high

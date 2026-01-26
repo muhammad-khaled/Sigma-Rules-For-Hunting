@@ -1,0 +1,27 @@
+title: Net Share Command Execution
+id: 2b6f8c3e-9d4a-4f1e-8c2a-7e3d1a9b5f6c  
+status: experimental
+description: Detects execution of the 'net share' command, which may indicate enumeration or creation of shared folders
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains: 'net share'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.discovery
+  - attack.lateral_movement
+  - attack.t1021.002
+falsepositives:
+  - legitimate administrative scripts
+level: medium

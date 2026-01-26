@@ -1,0 +1,48 @@
+title: Logon Attempts From Public IP Address
+id: 2b7f9a1d-3e4b-4d6a-9f8c-1c5f2a7c6d3e
+status: experimental
+description: Detects logon attempts originating from public IP addresses, which may indicate unauthorized access or exposure to external threats
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  product: windows
+  service: security
+  category: authentication
+detection:
+  selection:
+    EventID: 4624
+  filter:
+    IpAddress|startswith:
+      - '10.'
+      - '192.168.'
+      - '172.16.'
+      - '172.17.'
+      - '172.18.'
+      - '172.19.'
+      - '172.20.'
+      - '172.21.'
+      - '172.22.'
+      - '172.23.'
+      - '172.24.'
+      - '172.25.'
+      - '172.26.'
+      - '172.27.'
+      - '172.28.'
+      - '172.29.'
+      - '172.30.'
+      - '172.31.'
+      - '127.'
+  condition: selection and not filter
+fields:
+  - TargetUserName
+  - IpAddress
+  - WorkstationName
+  - LogonType
+  - SubjectUserName
+  - SubjectDomainName
+tags:
+  - attack.initial_access
+  - attack.t1078
+falsepositives:
+  - legitimate remote access via VPN or jump hosts
+level: high

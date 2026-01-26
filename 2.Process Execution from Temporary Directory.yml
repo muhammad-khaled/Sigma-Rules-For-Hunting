@@ -1,0 +1,32 @@
+title: Process Execution from Temporary Directory
+id: 6a7f9c3e-2b4d-4f8a-9d1e-3c2a1b7e5f9d  
+status: experimental
+description: Detects execution of processes from temporary directories such as %TEMP% or %APPDATA%\Temp
+author: Mohamed Khaled Ibrahim
+date: 2025/08/28
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|contains:
+      - '\AppData\Local\Temp\'
+      - '\AppData\Roaming\Temp\'
+      - '\Temp\'
+      - '\Windows\Temp\'
+  condition: selection
+fields:
+  - Image
+  - CommandLine
+  - ParentImage
+  - ParentCommandLine
+  - User
+  - Hostname
+tags:
+  - attack.execution
+  - attack.defense_evasion
+  - attack.t1059
+falsepositives:
+  - legitimate installers or updaters
+level: medium
+
